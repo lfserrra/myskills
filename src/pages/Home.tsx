@@ -11,7 +11,7 @@ interface SkillData {
 export function Home() {
   const [newSkill, setNewSkill] = useState('');
   const [mySkills, setMySkills] = useState<SkillData[]>([]);
-  const [gretting, setGretting] = useState('');
+  const [greting, setGreting] = useState('');
 
   function handleAddNewSkill() {
     const data = {
@@ -22,7 +22,7 @@ export function Home() {
     setMySkills(oldState => [...oldState, data]);
   }
 
-  function handleRemoveSkill(id: string){
+  function handleRemoveSkill(id: string) {
     setMySkills(oldState => oldState.filter(skill => skill.id !== id))
   }
 
@@ -30,37 +30,44 @@ export function Home() {
     const currentHour = new Date().getHours();
 
     if (currentHour < 12) {
-      setGretting('Good Morning');
+      setGreting('Good Morning');
     } else if (currentHour < 18) {
-      setGretting('Good Afternoon');
+      setGreting('Good Afternoon');
     } else {
-      setGretting('Good Night');
+      setGreting('Good Night');
     }
   }, [])
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome, Luis Fernando</Text>
-      <Text style={styles.gretting}>{gretting}</Text>
+      <Text testID="welcome" style={styles.title}>Welcome, Luis Fernando</Text>
+      <Text style={styles.gretting}>{greting}</Text>
 
       <TextInput
+        testID='input-new'
         style={styles.input}
         placeholder="New Skill"
         placeholderTextColor="#555"
         onChangeText={setNewSkill}
       />
 
-      <Button onPress={handleAddNewSkill} title="Add"/>
+      <Button
+        testID='button-add'
+        onPress={handleAddNewSkill}
+        title="Add"
+      />
 
       <Text style={[styles.title, { marginVertical: 50 }]}>
         My Skills
       </Text>
 
       <FlatList
+        testID='flat-list-skills'
         data={mySkills}
         keyExtractor={item => item.id}
+        keyboardShouldPersistTaps="never"
         renderItem={({ item }) => (
-          <SkillCard skill={item.name} onPress={() => handleRemoveSkill(item.id)}/>
+          <SkillCard testID={item.name} skill={item.name} onPress={() => handleRemoveSkill(item.id)} />
         )} />
     </View>
   )
